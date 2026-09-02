@@ -1,0 +1,7 @@
+<Solution>
+  <Folder Name="/MovieAPI.API/">
+    <Project Path="MovieAPI.API/MovieAPI.csproj" />
+  </Folder>
+  <Project Path="MovieAPI.Data/MovieAPI.Data.csproj" />
+  <Project Path="MovieAPI.Service/MovieAPI.Service.csproj" />
+</Solution>
