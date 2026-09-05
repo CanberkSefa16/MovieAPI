@@ -37,10 +37,5 @@ namespace MovieAPI.Data.Repositories
         {
             await _context.SaveChangesAsync();
         }
-
-        public void Update(Movie movie)
-        {
-            _context.Movies.Update(movie);
-        }
     }
 }

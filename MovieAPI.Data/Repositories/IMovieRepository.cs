@@ -7,7 +7,6 @@ namespace MovieAPI.Data.Repositories
         Task<List<Movie>> GetAllAsync();
         Task<Movie?> GetByIdAsync(int id);
         Task AddAsync(Movie movie);
-        void Update(Movie movie);
         void Delete(Movie movie);
         Task SaveChangesAsync();
     }

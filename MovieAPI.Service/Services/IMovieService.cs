@@ -1,13 +1,14 @@
 using MovieAPI.Data.Entities;
+using MovieAPI.Service.DTOs;
 
 namespace MovieAPI.Service.Services
 {
     public interface IMovieService
     {
-        Task<List<Movie>> GetAllMoviesAsync();
-        Task<Movie?> GetMovieByIdAsync(int id);
-        Task AddMovieAsync(Movie movie);
-        Task UpdateMovieAsync(Movie movie);
-        Task DeleteMovieAsync(int id);
+        Task<List<MovieDto>> GetAllMoviesAsync();
+        Task<MovieDto?> GetMovieByIdAsync(int id);
+        Task<Movie> AddMovieAsync(CreateMovieDto movieDto);
+        Task<bool> UpdateMovieAsync(UpdateMovieDto movieDto, int id);
+        Task<bool> DeleteMovieAsync(int id);
     }
 }
