@@ -37,12 +37,12 @@ namespace MovieAPI.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddMovie([FromBody] CreateMovieDto movieDto)
         {
-            Movie movie = await _movieService.AddMovieAsync(movieDto);
+            MovieDto dto = await _movieService.AddMovieAsync(movieDto);
             
             return CreatedAtAction(
                 nameof(GetMovieById),
-                new { id = movie.Id },
-                movie
+                new { id = dto.Id },
+                dto
             );
         }
 

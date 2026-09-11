@@ -16,7 +16,7 @@ namespace MovieAPI.Service.Services
         }
 
 
-        public async Task<Movie> AddMovieAsync(CreateMovieDto movieDto)
+        public async Task<MovieDto> AddMovieAsync(CreateMovieDto movieDto)
         {
             Movie movie = new Movie
             {
@@ -31,7 +31,19 @@ namespace MovieAPI.Service.Services
             await _movieRepository.AddAsync(movie);
             await _movieRepository.SaveChangesAsync();
 
-            return movie;
+            MovieDto dto = new MovieDto
+            {
+                Id = movie.Id,
+                Title = movie.Title,
+                Description = movie.Description,
+                Director = movie.Director,
+                DurationMinutes = movie.DurationMinutes,
+                ReleaseDate = movie.ReleaseDate,
+                Rating = movie.Rating,
+                PosterUrl = movie.PosterUrl
+            };
+
+            return dto;
         }
 
         public async Task<bool> DeleteMovieAsync(int id)

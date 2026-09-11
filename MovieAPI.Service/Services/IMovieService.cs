@@ -7,7 +7,7 @@ namespace MovieAPI.Service.Services
     {
         Task<List<MovieDto>> GetAllMoviesAsync();
         Task<MovieDto?> GetMovieByIdAsync(int id);
-        Task<Movie> AddMovieAsync(CreateMovieDto movieDto);
+        Task<MovieDto> AddMovieAsync(CreateMovieDto movieDto);
         Task<bool> UpdateMovieAsync(UpdateMovieDto movieDto, int id);
         Task<bool> DeleteMovieAsync(int id);
     }
