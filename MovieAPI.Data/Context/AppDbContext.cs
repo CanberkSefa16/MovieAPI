@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Identity.Client;
 using MovieAPI.Data.Entities;
 
 namespace MovieAPI.Data.Context
@@ -12,5 +13,6 @@ namespace MovieAPI.Data.Context
 
         public DbSet<Movie> Movies { get; set; }
         public DbSet<Category> Categories { get; set; }
+        public DbSet<User> Users { get; set; }
     }
 }

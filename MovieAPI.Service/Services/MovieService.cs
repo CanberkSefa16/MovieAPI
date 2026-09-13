@@ -59,11 +59,13 @@ namespace MovieAPI.Service.Services
             return true;
         }
 
-        public async Task<List<MovieDto>> GetAllMoviesAsync()
+        public async Task<PageResult<MovieDto>> GetAllMoviesAsync(string? search, string? director, decimal? minRating, string? sortBy, bool descending, int page, int pageSize)
         {
             List<MovieDto> movies = new List<MovieDto>();
 
-            List<Movie> records = await _movieRepository.GetAllAsync();
+            List<Movie> records = await _movieRepository.GetAllAsync(search, director, minRating, sortBy, descending, page, pageSize);
+
+            int totalCount = await _movieRepository.CountAsync(search, director, minRating);
 
             for(int i=0; i<records.Count; i++)
             {
@@ -83,7 +85,18 @@ namespace MovieAPI.Service.Services
                 movies.Add(dto);
             }
 
-            return movies;
+            int totalPages = (int)Math.Ceiling((double) totalCount / pageSize);
+
+            PageResult<MovieDto> result = new PageResult<MovieDto>
+            {
+                Items = movies,
+                Page = page,
+                PageSize = pageSize,
+                TotalCount = totalCount,
+                TotalPages = totalPages
+            };
+
+            return result;
         }
 
         public async Task<MovieDto?> GetMovieByIdAsync(int id)

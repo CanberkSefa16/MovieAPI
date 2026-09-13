@@ -17,10 +17,17 @@ namespace MovieAPI.API.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> GetMovies()
+        public async Task<IActionResult> GetMovies([FromQuery] string? search, [FromQuery] string? director, [FromQuery] decimal? minRating,
+        [FromQuery] string? sortBy, [FromQuery] bool descending, [FromQuery] int page=1, [FromQuery] int pageSize=10)
         {
-            List<MovieDto> movies = await _movieService.GetAllMoviesAsync();
-            return Ok(movies);
+            if(page < 1)
+                return BadRequest("Page must be greater than 0.");
+            
+            if(pageSize < 1 || pageSize > 100)
+                return BadRequest("Page size must be between 1 and 100.");
+
+            PageResult<MovieDto> result = await _movieService.GetAllMoviesAsync(search, director, minRating, sortBy, descending, page, pageSize);
+            return Ok(result);
         }
 
         [HttpGet("{id}")]

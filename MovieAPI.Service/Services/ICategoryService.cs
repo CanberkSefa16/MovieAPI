@@ -7,7 +7,7 @@ namespace MovieAPI.Service.Services
     {
         Task<ICollection<CategoryDto>> GetCategoriesAsync();
         Task<CategoryDto?> GetCategoryByIdAsync(int id);
-        Task AddCategoryAsync(CreateCategoryDto dto);
+        Task<CategoryDto> AddCategoryAsync(CreateCategoryDto dto);
         Task<bool> DeleteCategoryAsync(int id);
         Task<bool> UpdateCategoryAsync(int id, UpdateCategoryDto dto);
     }

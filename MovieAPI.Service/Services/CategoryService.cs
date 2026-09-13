@@ -13,15 +13,23 @@ namespace MovieAPI.Service.Services
             _repo = repo;
         }
 
-        public async Task AddCategoryAsync(CreateCategoryDto dto)
+        public async Task<CategoryDto> AddCategoryAsync(CreateCategoryDto dto)
         {
             Category category = new Category
             {
                 Name = dto.Name
             };
 
+            CategoryDto categoryDto = new CategoryDto
+            {
+                Id = category.Id,
+                Name = category.Name
+            };
+
             await _repo.AddCategoryAsync(category);
             await _repo.SaveChangesAsync();
+
+            return categoryDto;
         }
 
         public async Task<bool> DeleteCategoryAsync(int id)
