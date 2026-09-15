@@ -25,7 +25,7 @@ namespace MovieAPI.Data.Repositories
 
         public async Task<List<Movie>> GetAllAsync(string? search, string? director, decimal? minRating, string? sortBy, bool descending, int page, int pageSize)
         {
-            var query = _context.Movies.AsQueryable();
+            var query = _context.Movies.AsNoTracking().AsQueryable();
 
             if (!string.IsNullOrWhiteSpace(search))
             {
