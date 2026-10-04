@@ -20,7 +20,7 @@ namespace MovieAPI.API.Controllers
         public async Task<IActionResult> GetMovies([FromQuery] string? search, [FromQuery] string? director, [FromQuery] decimal? minRating,
         [FromQuery] string? sortBy, [FromQuery] bool descending, [FromQuery] int page=1, [FromQuery] int pageSize=10)
         {
-            if(page < 1)
+            if (page < 1)
                 return BadRequest("Page must be greater than 0.");
             
             if(pageSize < 1 || pageSize > 100)

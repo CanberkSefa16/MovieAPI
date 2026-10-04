@@ -7,7 +7,7 @@ namespace MovieAPI.Service.Services
         Task<ICollection<UserDto>> GetUsersAsync();
         Task<UserDto?> GetUserByIdAsync(int id);
         Task<UserDto?> AddUserAsync(CreateUserDto dto);
-        Task<bool> UpdateUserAsync(int id, UpdateUserDto dto);
-        Task<bool> DeleteUserAsync(int id);
+        Task UpdateUserAsync(int id, UpdateUserDto dto);
+        Task DeleteUserAsync(int id);
     }
 }

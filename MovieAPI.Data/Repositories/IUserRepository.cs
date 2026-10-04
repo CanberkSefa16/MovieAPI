@@ -11,6 +11,7 @@ namespace MovieAPI.Data.Repositories
         Task SaveChangesAsync();
         Task<bool> EmailExistsAsync(string email);
         Task<bool> UsernameExistsAsync(string username);
+        Task<User?> GetUserByEmailAsync(string email);
 
     }
 }

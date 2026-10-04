@@ -1,4 +1,5 @@
 
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MovieAPI.Data.Entities;
 using MovieAPI.Service.DTOs;
@@ -17,6 +18,7 @@ namespace MovieAPI.API.Controllers
             _service = service;
         }
 
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllUsers()
         {
@@ -28,7 +30,7 @@ namespace MovieAPI.API.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetUserById(int id)
         {
-            UserDto? user = await _service.GetUserByIdAsync(id);
+            UserDto user = await _service.GetUserByIdAsync(id);
 
             if(user == null)
                 return NotFound();
@@ -39,37 +41,28 @@ namespace MovieAPI.API.Controllers
         [HttpPost]
         public async Task<IActionResult> AddUser([FromBody] CreateUserDto dto)
         {
-            UserDto? userDto = await _service.AddUserAsync(dto);
-            
-            if(userDto == null)
-                return Conflict();
+            UserDto userDto = await _service.AddUserAsync(dto);
 
             return CreatedAtAction(
                 nameof(GetUserById),
                 new { id = userDto.Id },
-                dto
+                userDto
             );
         }
 
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteUser(int id)
         {
-            bool deleted = await _service.DeleteUserAsync(id);
+            await _service.DeleteUserAsync(id);
 
-            if(!deleted)
-                return NotFound();
-            
             return NoContent();
         }
 
         [HttpPut]
         public async Task<IActionResult> UpdateUser(int id, UpdateUserDto dto)
         {
-            bool updated = await _service.UpdateUserAsync(id, dto);
-
-            if(!updated)
-                return NotFound();
-            
+            await _service.UpdateUserAsync(id, dto);
+               
             return NoContent();
         }
     }

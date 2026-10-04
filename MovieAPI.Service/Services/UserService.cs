@@ -3,6 +3,7 @@ using MovieAPI.Data.Entities;
 using MovieAPI.Data.Repositories;
 using MovieAPI.Service.DTOs;
 using Microsoft.AspNetCore.Identity;
+using MovieAPI.Service.Exceptions;
 
 namespace MovieAPI.Service.Services
 {
@@ -17,15 +18,13 @@ namespace MovieAPI.Service.Services
             _passwordHasher = passwordHasher;
         }
 
-        public async Task<UserDto?> AddUserAsync(CreateUserDto dto)
+        public async Task<UserDto> AddUserAsync(CreateUserDto dto)
         {
-            bool usernameExisted = await _repo.UsernameExistsAsync(dto.Username);
-            bool emailExisted = await _repo.EmailExistsAsync(dto.Email);
+            if (await _repo.UsernameExistsAsync(dto.Username))
+                throw new ConflictException("Username already exists.");
 
-            if(usernameExisted || emailExisted)
-            {
-                return null;
-            }
+            if (await _repo.EmailExistsAsync(dto.Email))
+                throw new ConflictException("Email already exists.");
 
             var user = new User
             {
@@ -53,27 +52,25 @@ namespace MovieAPI.Service.Services
             return userDto;
         }
 
-        public async Task<bool> DeleteUserAsync(int id)
+        public async Task DeleteUserAsync(int id)
         {
             User? existed = await _repo.GetUserByIdAsync(id);
 
             if(existed == null)
             {
-                return false;
+                throw new NotFoundException("User not found.");
             }
 
             _repo.DeleteUser(existed);
             await _repo.SaveChangesAsync();
-
-            return true;
         }
 
-        public async Task<UserDto?> GetUserByIdAsync(int id)
+        public async Task<UserDto> GetUserByIdAsync(int id)
         {
             User? user = await _repo.GetUserByIdAsync(id);
 
-            if(user == null)
-                return null;
+            if (user == null)
+                throw new NotFoundException("User not found.");
             
             UserDto userDto = new UserDto
             {
@@ -109,19 +106,19 @@ namespace MovieAPI.Service.Services
             return userDtos;
         }
 
-        public async Task<bool> UpdateUserAsync(int id, UpdateUserDto dto)
+        public async Task UpdateUserAsync(int id, UpdateUserDto dto)
         {
             User? user = await _repo.GetUserByIdAsync(id);
 
             if(user == null)
-                return false;
+                throw new NotFoundException("User not found");
             
             if(user.Username != dto.Username)
             {
                 bool usernameExisted = await _repo.UsernameExistsAsync(dto.Username);
 
                 if(usernameExisted)
-                    return false;
+                    throw new ConflictException("Username already exists.");
             }
 
             if(user.Email != dto.Email)
@@ -129,7 +126,7 @@ namespace MovieAPI.Service.Services
                 bool emailExisted = await _repo.EmailExistsAsync(dto.Email);
 
                 if(emailExisted)
-                    return false;
+                    throw new ConflictException("Email already exists.");
             }
             
             user.Name = dto.Name;
@@ -139,7 +136,6 @@ namespace MovieAPI.Service.Services
 
             await _repo.SaveChangesAsync();
 
-            return true;
         }
     }
 }

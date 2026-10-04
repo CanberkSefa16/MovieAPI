@@ -13,5 +13,6 @@ namespace MovieAPI.Data.Entities
         public decimal Rating { get; set; }
         public string? PosterUrl { get; set; }
         public ICollection<Category> Categories { get; set; } = new List<Category>();
+        public ICollection<Comment> Comments { get; set; } = new List<Comment>();
     }
 }
